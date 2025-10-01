@@ -1,4 +1,4 @@
-name: CI - Unit Tests
+name: CI - Int & E2E Tests
 
 on: [pull_request]
 
