@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { Email } from '../value-objects/email.vo';
 import { VerificationCode } from '../value-objects/verification-code.vo';
 export class EmailVerification {
@@ -10,7 +10,7 @@ export class EmailVerification {
   createdAt: Date;
 
   constructor(email: Email, code: VerificationCode, expirationMinutes: number = 5, id?: string) {
-    this.id = id ?? uuid();
+    this.id = id ?? uuidv4();
     this.email = email;
     this.code = code;
 
