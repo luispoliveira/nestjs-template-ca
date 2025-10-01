@@ -82,6 +82,11 @@ export class UserNotEligibleForRoleException extends UserDomainException {
   }
 }
 
+export class UserAlreadyHasRoleException extends UserDomainException {
+  constructor(userId: string, roleName: string) {
+    super(`User ${userId} already has role: ${roleName}`, HttpStatus.CONFLICT);
+  }
+}
 export class InactiveUserException extends UserDomainException {
   constructor(operation: string) {
     super(`Cannot ${operation} for inactive user`, HttpStatus.BAD_REQUEST);
@@ -106,7 +111,7 @@ export class RoleHasAssignedUsersException extends RoleDomainException {
   }
 }
 
-export class PermissionAlreadfyAssignedException extends RoleDomainException {
+export class PermissionAlreadyAssignedException extends RoleDomainException {
   constructor(permission: string, roleName: string) {
     super(`Permission ${permission} is already assigned to role ${roleName}`, HttpStatus.CONFLICT);
   }

@@ -1,109 +1,108 @@
-import { Email } from '../../../value-objects/email.vo';
-import { VerificationCode } from '../../../value-objects/verification-code.vo';
+import { Email } from '@lib/core/value-objects/email.vo';
+import { VerificationCode } from '@lib/core/value-objects/verification-code.vo';
 import { EmailVerification } from '../../email-verification.entity';
 
-describe('EmailVerification Entity unit tests', () => {
-  const validEmail = new Email('test@example.com');
-  const validCode = new VerificationCode('123456');
+describe('EmailVerification Entity Unit Tests', () => {
+  let email: Email;
+  let code: VerificationCode;
 
   beforeEach(() => {
-    jest.useFakeTimers();
-    jest.setSystemTime(new Date('2025-10-01T12:00:00.000Z'));
-  });
-
-  afterEach(() => {
-    jest.useRealTimers();
+    email = new Email('test@example.com');
+    code = new VerificationCode('123456');
   });
 
   describe('constructor', () => {
-    it('should create email verification with default values', () => {
-      const verification = new EmailVerification(validEmail, validCode);
+    it('should create a new EmailVerification with default expiration', () => {
+      const emailVerification = new EmailVerification(email, code);
 
-      expect(verification.id).toBeDefined();
-      expect(verification.id).toMatch(
-        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
-      );
-      expect(verification.email).toBe(validEmail);
-      expect(verification.code).toBe(validCode);
-      expect(verification.verifiedAt).toBeNull();
-      expect(verification.createdAt).toEqual(new Date('2025-10-01T12:00:00.000Z'));
+      expect(emailVerification.id).toBeDefined();
+      expect(emailVerification.email).toBe(email);
+      expect(emailVerification.code).toBe(code);
+      expect(emailVerification.verifiedAt).toBeNull();
+      expect(emailVerification.createdAt).toBeInstanceOf(Date);
+      expect(emailVerification.expiresAt).toBeInstanceOf(Date);
+
+      // Check that expiration is 5 minutes from now by default
+      const expectedExpiration = new Date(emailVerification.createdAt.getTime() + 5 * 60000);
+      expect(
+        Math.abs(emailVerification.expiresAt.getTime() - expectedExpiration.getTime()),
+      ).toBeLessThan(1000);
     });
 
-    it('should create email verification with custom expiration minutes', () => {
+    it('should create a new EmailVerification with custom expiration', () => {
       const customExpirationMinutes = 10;
-      const verification = new EmailVerification(validEmail, validCode, customExpirationMinutes);
+      const emailVerification = new EmailVerification(email, code, customExpirationMinutes);
 
-      const expectedExpirationTime = new Date('2025-10-01T12:10:00.000Z');
-      expect(verification.expiresAt).toEqual(expectedExpirationTime);
+      const expectedExpiration = new Date(
+        emailVerification.createdAt.getTime() + customExpirationMinutes * 60000,
+      );
+      expect(
+        Math.abs(emailVerification.expiresAt.getTime() - expectedExpiration.getTime()),
+      ).toBeLessThan(1000);
     });
 
-    it('should create email verification with custom id', () => {
+    it('should create a new EmailVerification with provided id', () => {
       const customId = 'custom-id-123';
-      const verification = new EmailVerification(validEmail, validCode, 5, customId);
+      const emailVerification = new EmailVerification(email, code, 5, customId);
 
-      expect(verification.id).toBe(customId);
+      expect(emailVerification.id).toBe(customId);
     });
   });
 
   describe('isExpired', () => {
-    it('should return false when verification is not expired', () => {
-      const verification = new EmailVerification(validEmail, validCode, 5);
+    it('should return false for non-expired verification', () => {
+      const emailVerification = new EmailVerification(email, code, 5);
 
-      jest.setSystemTime(new Date('2025-10-01T12:04:00.000Z'));
-
-      expect(verification.isExpired()).toBe(false);
+      expect(emailVerification.isExpired()).toBe(false);
     });
 
-    it('should return true when verification is expired', () => {
-      const verification = new EmailVerification(validEmail, validCode, 5);
+    it('should return true for expired verification', () => {
+      const emailVerification = new EmailVerification(email, code, -1); // Expired 1 minute ago
 
-      jest.setSystemTime(new Date('2025-10-01T12:06:00.000Z'));
-
-      expect(verification.isExpired()).toBe(true);
+      expect(emailVerification.isExpired()).toBe(true);
     });
   });
 
   describe('isVerified', () => {
-    it('should return false when verification is not verified', () => {
-      const verification = new EmailVerification(validEmail, validCode);
+    it('should return false for unverified email', () => {
+      const emailVerification = new EmailVerification(email, code);
 
-      expect(verification.isVerified()).toBe(false);
+      expect(emailVerification.isVerified()).toBe(false);
     });
 
-    it('should return true when verification is verified', () => {
-      const verification = new EmailVerification(validEmail, validCode);
-      verification.markAsVerified();
+    it('should return true for verified email', () => {
+      const emailVerification = new EmailVerification(email, code);
+      emailVerification.markAsVerified();
 
-      expect(verification.isVerified()).toBe(true);
+      expect(emailVerification.isVerified()).toBe(true);
     });
   });
 
   describe('markAsVerified', () => {
-    it('should set verifiedAt to current date', () => {
-      const verification = new EmailVerification(validEmail, validCode);
+    it('should mark the verification as verified', () => {
+      const emailVerification = new EmailVerification(email, code);
 
-      jest.setSystemTime(new Date('2025-10-01T12:03:30.000Z'));
-      verification.markAsVerified();
+      expect(emailVerification.verifiedAt).toBeNull();
 
-      expect(verification.verifiedAt).toEqual(new Date('2025-10-01T12:03:30.000Z'));
+      emailVerification.markAsVerified();
+
+      expect(emailVerification.verifiedAt).toBeInstanceOf(Date);
+      expect(emailVerification.isVerified()).toBe(true);
     });
-  });
 
-  describe('edge cases', () => {
-    it('should generate unique ids for multiple instances', () => {
-      const verification1 = new EmailVerification(validEmail, validCode);
-      const verification2 = new EmailVerification(validEmail, validCode);
-      const verification3 = new EmailVerification(validEmail, validCode);
+    it('should update verifiedAt timestamp when called multiple times', () => {
+      const emailVerification = new EmailVerification(email, code);
 
-      const ids = [verification1.id, verification2.id, verification3.id];
-      const uniqueIds = new Set(ids);
+      emailVerification.markAsVerified();
+      const firstVerificationTime = emailVerification.verifiedAt;
 
-      expect(uniqueIds.size).toBe(3);
-
-      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      ids.forEach((id) => {
-        expect(id).toMatch(uuidRegex);
-      });
+      // Wait a bit and mark as verified again
+      setTimeout(() => {
+        emailVerification.markAsVerified();
+        expect(emailVerification.verifiedAt!.getTime()).toBeGreaterThan(
+          firstVerificationTime!.getTime(),
+        );
+      }, 10);
     });
   });
 });

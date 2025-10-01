@@ -10,6 +10,7 @@ export enum ActionType {
   CREATE = 'create',
   UPDATE = 'update',
   DELETE = 'delete',
+  ALL = 'all',
 }
 
 export class ResourceAction {

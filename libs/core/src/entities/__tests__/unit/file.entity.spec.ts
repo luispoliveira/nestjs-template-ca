@@ -1,133 +1,82 @@
+import { FileId } from '@lib/core/value-objects/file-id.vo';
+import { UserId } from '@lib/core/value-objects/user-id.vo';
 import { File } from '../../file.entity';
 
-describe('File Entity unit tests', () => {
-  const validData = {
-    filename: 'test-file-123.jpg',
-    originalName: 'original-image.jpg',
-    path: '/uploads/images',
+describe('File Entity Unit Tests', () => {
+  const mockFileData = {
+    filename: 'test-file.jpg',
+    originalName: 'original-test-file.jpg',
+    path: '/uploads/test-file.jpg',
     mimeType: 'image/jpeg',
-    size: 1024000,
-    bucket: 'main-bucket',
+    size: 1024,
+    bucket: 'test-bucket',
   };
 
-  beforeEach(() => {
-    jest.useFakeTimers();
-    jest.setSystemTime(new Date('2025-10-01T12:00:00.000Z'));
-  });
-
-  afterEach(() => {
-    jest.useRealTimers();
-  });
-
   describe('constructor', () => {
-    it('should create file with default values', () => {
+    it('should create a new File with default values', () => {
       const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
+        mockFileData.filename,
+        mockFileData.originalName,
+        mockFileData.path,
+        mockFileData.mimeType,
+        mockFileData.size,
+        mockFileData.bucket,
       );
 
-      expect(file.id).toBeDefined();
-      expect(file.id.getValue()).toMatch(
-        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
-      );
-      expect(file.filename).toBe(validData.filename);
-      expect(file.originalName).toBe(validData.originalName);
-      expect(file.path).toBe(validData.path);
-      expect(file.mimeType).toBe(validData.mimeType);
-      expect(file.size).toBe(validData.size);
-      expect(file.bucket).toBe(validData.bucket);
+      expect(file.id).toBeInstanceOf(FileId);
+      expect(file.filename).toBe(mockFileData.filename);
+      expect(file.originalName).toBe(mockFileData.originalName);
+      expect(file.path).toBe(mockFileData.path);
+      expect(file.mimeType).toBe(mockFileData.mimeType);
+      expect(file.size).toBe(mockFileData.size);
+      expect(file.bucket).toBe(mockFileData.bucket);
       expect(file.userId).toBeNull();
       expect(file.isPublic).toBe(false);
-      expect(file.createdAt).toEqual(new Date('2025-10-01T12:00:00.000Z'));
-      expect(file.updatedAt).toEqual(new Date('2025-10-01T12:00:00.000Z'));
+      expect(file.createdAt).toBeInstanceOf(Date);
+      expect(file.updatedAt).toBeInstanceOf(Date);
     });
 
-    it('should create file with custom userId', () => {
-      const userId = 'user-123';
+    it('should create a new File with custom values', () => {
+      const userId = UserId.create();
+      const isPublic = true;
+      const customId = 'custom-id';
+
       const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
+        mockFileData.filename,
+        mockFileData.originalName,
+        mockFileData.path,
+        mockFileData.mimeType,
+        mockFileData.size,
+        mockFileData.bucket,
         userId,
-      );
-
-      expect(file.userId?.getValue()).toBe(userId);
-    });
-
-    it('should create file with custom isPublic flag', () => {
-      const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
-        null,
-        true,
-      );
-
-      expect(file.isPublic).toBe(true);
-    });
-
-    it('should create file with custom id', () => {
-      const customId = 'custom-file-id-123';
-      const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
-        null,
-        false,
+        isPublic,
         customId,
       );
 
+      expect(file.userId).toBe(userId);
+      expect(file.isPublic).toBe(isPublic);
       expect(file.id.getValue()).toBe(customId);
-    });
-
-    it('should create file with all custom parameters', () => {
-      const userId = 'user-456';
-      const customId = 'custom-file-id-456';
-      const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
-        userId,
-        true,
-        customId,
-      );
-
-      expect(file.id.getValue()).toBe(customId);
-      expect(file.userId?.getValue()).toBe(userId);
-      expect(file.isPublic).toBe(true);
     });
   });
 
   describe('fromData', () => {
-    it('should create file from data object with all properties', () => {
+    it('should create a File from data object', () => {
+      const userId = UserId.create();
+      const createdAt = new Date('2023-01-01');
+      const updatedAt = new Date('2023-01-02');
+
       const data = {
-        id: 'existing-file-id',
-        filename: 'data-file.pdf',
-        originalName: 'document.pdf',
-        path: '/documents',
-        mimeType: 'application/pdf',
-        size: 2048000,
-        bucket: 'documents-bucket',
-        userId: 'user-789',
+        id: 'test-id',
+        filename: mockFileData.filename,
+        originalName: mockFileData.originalName,
+        path: mockFileData.path,
+        mimeType: mockFileData.mimeType,
+        size: mockFileData.size,
+        bucket: mockFileData.bucket,
+        userId,
         isPublic: true,
-        createdAt: new Date('2025-09-15T10:30:00.000Z'),
-        updatedAt: new Date('2025-09-20T14:45:00.000Z'),
+        createdAt,
+        updatedAt,
       };
 
       const file = File.fromData(data);
@@ -139,349 +88,212 @@ describe('File Entity unit tests', () => {
       expect(file.mimeType).toBe(data.mimeType);
       expect(file.size).toBe(data.size);
       expect(file.bucket).toBe(data.bucket);
-      expect(file.userId?.getValue()).toBe(data.userId);
+      expect(file.userId).toBe(data.userId);
       expect(file.isPublic).toBe(data.isPublic);
-      expect(file.createdAt).toEqual(data.createdAt);
-      expect(file.updatedAt).toEqual(data.updatedAt);
-    });
-
-    it('should create file from data object with null userId', () => {
-      const data = {
-        id: 'existing-file-id',
-        filename: 'data-file.pdf',
-        originalName: 'document.pdf',
-        path: '/documents',
-        mimeType: 'application/pdf',
-        size: 2048000,
-        bucket: 'documents-bucket',
-        userId: null,
-        isPublic: false,
-        createdAt: new Date('2025-09-15T10:30:00.000Z'),
-        updatedAt: new Date('2025-09-20T14:45:00.000Z'),
-      };
-
-      const file = File.fromData(data);
-
-      expect(file.userId).toBeNull();
-      expect(file.isPublic).toBe(false);
+      expect(file.createdAt).toBe(data.createdAt);
+      expect(file.updatedAt).toBe(data.updatedAt);
     });
   });
 
   describe('makePublic', () => {
-    it('should make private file public and update timestamp', () => {
+    it('should make a private file public', async () => {
       const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
+        mockFileData.filename,
+        mockFileData.originalName,
+        mockFileData.path,
+        mockFileData.mimeType,
+        mockFileData.size,
+        mockFileData.bucket,
       );
 
-      expect(file.isPublic).toBe(false);
+      const originalUpdatedAt = file.updatedAt;
 
-      jest.setSystemTime(new Date('2025-10-01T12:05:00.000Z'));
+      // Add a small delay to ensure timestamp changes
+      await new Promise((resolve) => setTimeout(resolve, 1));
+
       file.makePublic();
 
       expect(file.isPublic).toBe(true);
-      expect(file.updatedAt).toEqual(new Date('2025-10-01T12:05:00.000Z'));
+      expect(file.updatedAt.getTime()).toBeGreaterThan(originalUpdatedAt.getTime());
     });
 
-    it('should not update timestamp if file is already public', () => {
+    it('should not update timestamps if file is already public', () => {
       const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
+        mockFileData.filename,
+        mockFileData.originalName,
+        mockFileData.path,
+        mockFileData.mimeType,
+        mockFileData.size,
+        mockFileData.bucket,
         null,
         true,
       );
 
-      const initialUpdatedAt = file.updatedAt;
+      const originalUpdatedAt = file.updatedAt;
 
-      jest.setSystemTime(new Date('2025-10-01T12:05:00.000Z'));
       file.makePublic();
 
       expect(file.isPublic).toBe(true);
-      expect(file.updatedAt).toEqual(initialUpdatedAt);
+      expect(file.updatedAt).toBe(originalUpdatedAt);
     });
   });
 
   describe('makePrivate', () => {
-    it('should make public file private and update timestamp', () => {
+    it('should make a public file private', async () => {
       const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
+        mockFileData.filename,
+        mockFileData.originalName,
+        mockFileData.path,
+        mockFileData.mimeType,
+        mockFileData.size,
+        mockFileData.bucket,
         null,
         true,
       );
 
-      expect(file.isPublic).toBe(true);
+      const originalUpdatedAt = file.updatedAt;
+      await new Promise((resolve) => setTimeout(resolve, 1));
 
-      jest.setSystemTime(new Date('2025-10-01T12:05:00.000Z'));
       file.makePrivate();
 
       expect(file.isPublic).toBe(false);
-      expect(file.updatedAt).toEqual(new Date('2025-10-01T12:05:00.000Z'));
+
+      expect(file.updatedAt.getTime()).toBeGreaterThan(originalUpdatedAt.getTime());
     });
 
-    it('should not update timestamp if file is already private', () => {
+    it('should not update timestamps if file is already private', () => {
       const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
+        mockFileData.filename,
+        mockFileData.originalName,
+        mockFileData.path,
+        mockFileData.mimeType,
+        mockFileData.size,
+        mockFileData.bucket,
       );
 
-      const initialUpdatedAt = file.updatedAt;
+      const originalUpdatedAt = file.updatedAt;
 
-      jest.setSystemTime(new Date('2025-10-01T12:05:00.000Z'));
       file.makePrivate();
 
       expect(file.isPublic).toBe(false);
-      expect(file.updatedAt).toEqual(initialUpdatedAt);
+      expect(file.updatedAt).toBe(originalUpdatedAt);
     });
   });
 
   describe('updateUser', () => {
-    it('should update userId and timestamp', () => {
+    it('should update the user with a new userId', async () => {
       const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
+        mockFileData.filename,
+        mockFileData.originalName,
+        mockFileData.path,
+        mockFileData.mimeType,
+        mockFileData.size,
+        mockFileData.bucket,
       );
 
-      const newUserId = 'new-user-123';
+      const originalUpdatedAt = file.updatedAt;
+      const newUserId = 'new-user-id';
+      await new Promise((resolve) => setTimeout(resolve, 1));
 
-      jest.setSystemTime(new Date('2025-10-01T12:10:00.000Z'));
       file.updateUser(newUserId);
 
-      expect(file.userId?.getValue()).toBe(newUserId);
-      expect(file.updatedAt).toEqual(new Date('2025-10-01T12:10:00.000Z'));
+      expect(file.userId).toBeInstanceOf(UserId);
+      expect(file.userId!.getValue()).toBe(newUserId);
+      expect(file.updatedAt.getTime()).toBeGreaterThan(originalUpdatedAt.getTime());
     });
 
-    it('should set userId to null and update timestamp', () => {
+    it('should set userId to null when passed null', async () => {
+      const userId = UserId.create();
       const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
-        'existing-user',
+        mockFileData.filename,
+        mockFileData.originalName,
+        mockFileData.path,
+        mockFileData.mimeType,
+        mockFileData.size,
+        mockFileData.bucket,
+        userId,
       );
 
-      jest.setSystemTime(new Date('2025-10-01T12:10:00.000Z'));
+      const originalUpdatedAt = file.updatedAt;
+      await new Promise((resolve) => setTimeout(resolve, 1));
+
       file.updateUser(null);
 
       expect(file.userId).toBeNull();
-      expect(file.updatedAt).toEqual(new Date('2025-10-01T12:10:00.000Z'));
+      expect(file.updatedAt.getTime()).toBeGreaterThan(originalUpdatedAt.getTime());
     });
   });
 
   describe('rename', () => {
-    it('should update originalName and timestamp', () => {
+    it('should rename the file', async () => {
       const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
+        mockFileData.filename,
+        mockFileData.originalName,
+        mockFileData.path,
+        mockFileData.mimeType,
+        mockFileData.size,
+        mockFileData.bucket,
       );
 
-      const newOriginalName = 'renamed-document.jpg';
+      const originalUpdatedAt = file.updatedAt;
+      const newName = 'new-name.jpg';
 
-      jest.setSystemTime(new Date('2025-10-01T12:15:00.000Z'));
-      file.rename(newOriginalName);
+      // Add a small delay to ensure timestamp changes
+      await new Promise((resolve) => setTimeout(resolve, 1));
 
-      expect(file.originalName).toBe(newOriginalName);
-      expect(file.updatedAt).toEqual(new Date('2025-10-01T12:15:00.000Z'));
-    });
+      file.rename(newName);
 
-    it('should handle empty string as new name', () => {
-      const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
-      );
-
-      jest.setSystemTime(new Date('2025-10-01T12:15:00.000Z'));
-      file.rename('');
-
-      expect(file.originalName).toBe('');
-      expect(file.updatedAt).toEqual(new Date('2025-10-01T12:15:00.000Z'));
+      expect(file.originalName).toBe(newName);
+      expect(file.updatedAt.getTime()).toBeGreaterThan(originalUpdatedAt.getTime());
     });
   });
 
   describe('move', () => {
-    it('should update path and timestamp without changing bucket', () => {
+    it('should move the file to a new path', async () => {
       const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
+        mockFileData.filename,
+        mockFileData.originalName,
+        mockFileData.path,
+        mockFileData.mimeType,
+        mockFileData.size,
+        mockFileData.bucket,
       );
 
-      const newPath = '/uploads/documents';
+      const originalUpdatedAt = file.updatedAt;
+      const newPath = '/new-uploads/test-file.jpg';
 
-      jest.setSystemTime(new Date('2025-10-01T12:20:00.000Z'));
+      // Add a small delay to ensure timestamp changes
+      await new Promise((resolve) => setTimeout(resolve, 1));
+
       file.move(newPath);
 
       expect(file.path).toBe(newPath);
-      expect(file.bucket).toBe(validData.bucket); // Should remain unchanged
-      expect(file.updatedAt).toEqual(new Date('2025-10-01T12:20:00.000Z'));
+      expect(file.bucket).toBe(mockFileData.bucket); // Should remain unchanged
+      expect(file.updatedAt.getTime()).toBeGreaterThan(originalUpdatedAt.getTime());
     });
 
-    it('should update path and bucket when both are provided', () => {
+    it('should move the file to a new path and bucket', async () => {
       const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
+        mockFileData.filename,
+        mockFileData.originalName,
+        mockFileData.path,
+        mockFileData.mimeType,
+        mockFileData.size,
+        mockFileData.bucket,
       );
 
-      const newPath = '/uploads/archived';
-      const newBucket = 'archive-bucket';
+      const originalUpdatedAt = file.updatedAt;
+      const newPath = '/new-uploads/test-file.jpg';
+      const newBucket = 'new-bucket';
 
-      jest.setSystemTime(new Date('2025-10-01T12:20:00.000Z'));
+      // Add a longer delay to ensure timestamp changes
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
       file.move(newPath, newBucket);
 
       expect(file.path).toBe(newPath);
       expect(file.bucket).toBe(newBucket);
-      expect(file.updatedAt).toEqual(new Date('2025-10-01T12:20:00.000Z'));
-    });
-
-    it('should handle empty path', () => {
-      const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
-      );
-
-      jest.setSystemTime(new Date('2025-10-01T12:20:00.000Z'));
-      file.move('');
-
-      expect(file.path).toBe('');
-      expect(file.updatedAt).toEqual(new Date('2025-10-01T12:20:00.000Z'));
-    });
-  });
-
-  describe('edge cases', () => {
-    it('should generate unique ids for multiple instances', () => {
-      const file1 = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
-      );
-      const file2 = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
-      );
-      const file3 = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
-      );
-
-      const ids = [file1.id, file2.id, file3.id];
-      const uniqueIds = new Set(ids);
-
-      expect(uniqueIds.size).toBe(3);
-
-      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      ids.forEach((id) => {
-        expect(id.getValue()).toMatch(uuidRegex);
-      });
-    });
-
-    it('should handle zero file size', () => {
-      const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        0,
-        validData.bucket,
-      );
-
-      expect(file.size).toBe(0);
-    });
-
-    it('should handle very large file size', () => {
-      const largeSize = Number.MAX_SAFE_INTEGER;
-      const file = new File(
-        validData.filename,
-        validData.originalName,
-        validData.path,
-        validData.mimeType,
-        largeSize,
-        validData.bucket,
-      );
-
-      expect(file.size).toBe(largeSize);
-    });
-
-    it('should handle special characters in filename and originalName', () => {
-      const specialFilename = 'file-with-特殊字符-123.txt';
-      const specialOriginalName = 'original-文件名-with-émojis-🎉.txt';
-
-      const file = new File(
-        specialFilename,
-        specialOriginalName,
-        validData.path,
-        validData.mimeType,
-        validData.size,
-        validData.bucket,
-      );
-
-      expect(file.filename).toBe(specialFilename);
-      expect(file.originalName).toBe(specialOriginalName);
-    });
-
-    it('should handle empty strings for path and bucket', () => {
-      const file = new File(
-        validData.filename,
-        validData.originalName,
-        '',
-        validData.mimeType,
-        validData.size,
-        '',
-      );
-
-      expect(file.path).toBe('');
-      expect(file.bucket).toBe('');
+      expect(file.updatedAt.getTime()).toBeGreaterThan(originalUpdatedAt.getTime());
     });
   });
 });

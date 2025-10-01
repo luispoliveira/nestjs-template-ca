@@ -20,7 +20,7 @@ export class File {
     mimeType: string,
     size: number,
     bucket: string,
-    userId: string | null = null,
+    userId: UserId | null = null,
     isPublic: boolean = false,
     id?: string,
   ) {
@@ -31,7 +31,7 @@ export class File {
     this.mimeType = mimeType;
     this.size = size;
     this.bucket = bucket;
-    this.userId = userId ? UserId.create(userId) : null;
+    this.userId = userId;
     this.isPublic = isPublic;
     this.createdAt = new Date();
     this.updatedAt = new Date();
@@ -45,7 +45,7 @@ export class File {
     mimeType: string;
     size: number;
     bucket: string;
-    userId: string | null;
+    userId: UserId | null;
     isPublic: boolean;
     createdAt: Date;
     updatedAt: Date;
