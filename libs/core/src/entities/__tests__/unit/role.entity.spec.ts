@@ -92,7 +92,7 @@ describe('Role Entity Unit Tests', () => {
       const role = Role.create('Editor', 'Can edit content');
       const originalUpdatedAt = role.updatedAt;
 
-      await new Promise((resolve) => setTimeout(resolve, 1));
+      await new Promise((resolve) => setTimeout(resolve, 10));
       role.addPermission(permission1);
 
       expect(role.permissions).toContain(permission1);

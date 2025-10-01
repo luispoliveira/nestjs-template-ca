@@ -215,7 +215,7 @@ describe('File Entity Unit Tests', () => {
       );
 
       const originalUpdatedAt = file.updatedAt;
-      await new Promise((resolve) => setTimeout(resolve, 1));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       file.updateUser(null);
 
