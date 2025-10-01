@@ -1,13 +1,14 @@
-import { v4 as uuidv4 } from 'uuid';
+import { FileId } from '../value-objects/file-id.vo';
+import { UserId } from '../value-objects/user-id.vo';
 export class File {
-  id: string;
+  id: FileId;
   filename: string;
   originalName: string;
   path: string;
   mimeType: string;
   size: number;
   bucket: string;
-  userId: string | null;
+  userId: UserId | null;
   isPublic: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -23,14 +24,14 @@ export class File {
     isPublic: boolean = false,
     id?: string,
   ) {
-    this.id = id ?? uuidv4();
+    this.id = FileId.create(id);
     this.filename = filename;
     this.originalName = originalName;
     this.path = path;
     this.mimeType = mimeType;
     this.size = size;
     this.bucket = bucket;
-    this.userId = userId;
+    this.userId = userId ? UserId.create(userId) : null;
     this.isPublic = isPublic;
     this.createdAt = new Date();
     this.updatedAt = new Date();
@@ -80,7 +81,7 @@ export class File {
   }
 
   updateUser(userId: string | null) {
-    this.userId = userId;
+    this.userId = userId ? UserId.create(userId) : null;
     this.updatedAt = new Date();
   }
 

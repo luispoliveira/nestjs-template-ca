@@ -31,7 +31,7 @@ describe('File Entity unit tests', () => {
       );
 
       expect(file.id).toBeDefined();
-      expect(file.id).toMatch(
+      expect(file.id.getValue()).toMatch(
         /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
       );
       expect(file.filename).toBe(validData.filename);
@@ -58,7 +58,7 @@ describe('File Entity unit tests', () => {
         userId,
       );
 
-      expect(file.userId).toBe(userId);
+      expect(file.userId?.getValue()).toBe(userId);
     });
 
     it('should create file with custom isPublic flag', () => {
@@ -90,7 +90,7 @@ describe('File Entity unit tests', () => {
         customId,
       );
 
-      expect(file.id).toBe(customId);
+      expect(file.id.getValue()).toBe(customId);
     });
 
     it('should create file with all custom parameters', () => {
@@ -108,8 +108,8 @@ describe('File Entity unit tests', () => {
         customId,
       );
 
-      expect(file.id).toBe(customId);
-      expect(file.userId).toBe(userId);
+      expect(file.id.getValue()).toBe(customId);
+      expect(file.userId?.getValue()).toBe(userId);
       expect(file.isPublic).toBe(true);
     });
   });
@@ -132,14 +132,14 @@ describe('File Entity unit tests', () => {
 
       const file = File.fromData(data);
 
-      expect(file.id).toBe(data.id);
+      expect(file.id.getValue()).toBe(data.id);
       expect(file.filename).toBe(data.filename);
       expect(file.originalName).toBe(data.originalName);
       expect(file.path).toBe(data.path);
       expect(file.mimeType).toBe(data.mimeType);
       expect(file.size).toBe(data.size);
       expect(file.bucket).toBe(data.bucket);
-      expect(file.userId).toBe(data.userId);
+      expect(file.userId?.getValue()).toBe(data.userId);
       expect(file.isPublic).toBe(data.isPublic);
       expect(file.createdAt).toEqual(data.createdAt);
       expect(file.updatedAt).toEqual(data.updatedAt);
@@ -267,7 +267,7 @@ describe('File Entity unit tests', () => {
       jest.setSystemTime(new Date('2025-10-01T12:10:00.000Z'));
       file.updateUser(newUserId);
 
-      expect(file.userId).toBe(newUserId);
+      expect(file.userId?.getValue()).toBe(newUserId);
       expect(file.updatedAt).toEqual(new Date('2025-10-01T12:10:00.000Z'));
     });
 
@@ -422,7 +422,7 @@ describe('File Entity unit tests', () => {
 
       const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       ids.forEach((id) => {
-        expect(id).toMatch(uuidRegex);
+        expect(id.getValue()).toMatch(uuidRegex);
       });
     });
 
