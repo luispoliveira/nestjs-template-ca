@@ -50,7 +50,7 @@ describe('Authentication Entities Integration Tests', () => {
 
   describe('Password Reset Workflow', () => {
     it('should handle complete password reset process', () => {
-      const resetToken = new Token('reset-token-123');
+      const resetToken = Token.generate();
       const passwordReset = new PasswordReset(userId, email, resetToken, expirationMinutes);
 
       // Initially not used and not expired
@@ -66,7 +66,7 @@ describe('Authentication Entities Integration Tests', () => {
     });
 
     it('should handle expired password reset', () => {
-      const resetToken = new Token('reset-token-123');
+      const resetToken = Token.generate();
       const expiredReset = new PasswordReset(userId, email, resetToken, -1); // Expired
 
       expect(expiredReset.isExpired()).toBe(true);
@@ -79,7 +79,7 @@ describe('Authentication Entities Integration Tests', () => {
     });
 
     it('should prevent reuse of used reset token', () => {
-      const resetToken = new Token('reset-token-123');
+      const resetToken = Token.generate();
       const passwordReset = new PasswordReset(userId, email, resetToken, expirationMinutes);
 
       passwordReset.markAsUsed();
@@ -122,7 +122,7 @@ describe('Authentication Entities Integration Tests', () => {
 
   describe('Refresh Token Management', () => {
     it('should handle refresh token lifecycle', () => {
-      const refreshTokenValue = new Token('refresh-token-123');
+      const refreshTokenValue = Token.generate();
       const expirationDays = 7;
       const refreshToken = new RefreshToken(userId, refreshTokenValue, expirationDays);
 
@@ -139,7 +139,7 @@ describe('Authentication Entities Integration Tests', () => {
     });
 
     it('should handle expired refresh token', () => {
-      const refreshTokenValue = new Token('refresh-token-123');
+      const refreshTokenValue = Token.generate();
       const expiredRefreshToken = new RefreshToken(userId, refreshTokenValue, -1); // Expired
 
       expect(expiredRefreshToken.isExpired()).toBe(true);
@@ -152,7 +152,7 @@ describe('Authentication Entities Integration Tests', () => {
     });
 
     it('should handle both revoked and expired states', () => {
-      const refreshTokenValue = new Token('refresh-token-123');
+      const refreshTokenValue = Token.generate();
       const expiredRefreshToken = new RefreshToken(userId, refreshTokenValue, -1); // Expired
       expiredRefreshToken.revoke(); // Also revoked
 
@@ -164,8 +164,8 @@ describe('Authentication Entities Integration Tests', () => {
   describe('Cross-Entity Authentication Scenarios', () => {
     it('should handle user authentication with multiple token types', () => {
       // Simulate a complete authentication flow
-      const refreshTokenValue = new Token('refresh-token-123');
-      const resetToken = new Token('reset-token-123');
+      const refreshTokenValue = Token.generate();
+      const resetToken = Token.generate();
       const verificationCode = new VerificationCode('123456');
       const otpSecret = 'JBSWY3DPEHPK3PXP';
 
@@ -206,7 +206,7 @@ describe('Authentication Entities Integration Tests', () => {
       const longExpiration = 60; // 60 minutes
 
       const shortLivedOtp = new Otp(userId, 'secret', shortExpiration);
-      const longLivedReset = new PasswordReset(userId, email, new Token('token'), longExpiration);
+      const longLivedReset = new PasswordReset(userId, email, Token.generate(), longExpiration);
 
       expect(shortLivedOtp.expiresAt.getTime()).toBeLessThan(longLivedReset.expiresAt.getTime());
 
@@ -223,8 +223,8 @@ describe('Authentication Entities Integration Tests', () => {
       const user1Otp = new Otp(userId, 'secret1', 5);
       const user2Otp = new Otp(userId2, 'secret2', 5);
 
-      const user1Reset = new PasswordReset(userId, email, new Token('token1'), 15);
-      const user2Reset = new PasswordReset(userId2, email2, new Token('token2'), 15);
+      const user1Reset = new PasswordReset(userId, email, Token.generate(), 15);
+      const user2Reset = new PasswordReset(userId2, email2, Token.generate(), 15);
 
       // Each user's tokens should be independent
       user1Otp.markAsVerified();
@@ -240,7 +240,7 @@ describe('Authentication Entities Integration Tests', () => {
 
   describe('Error Scenarios', () => {
     it('should handle concurrent token operations', () => {
-      const refreshTokenValue = new Token('refresh-token-123');
+      const refreshTokenValue = Token.generate();
       const refreshToken = new RefreshToken(userId, refreshTokenValue, 7);
 
       // Simulate concurrent revocation

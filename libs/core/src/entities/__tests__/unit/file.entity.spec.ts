@@ -109,7 +109,7 @@ describe('File Entity Unit Tests', () => {
       const originalUpdatedAt = file.updatedAt;
 
       // Add a small delay to ensure timestamp changes
-      await new Promise((resolve) => setTimeout(resolve, 1));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       file.makePublic();
 
