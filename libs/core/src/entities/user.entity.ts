@@ -288,7 +288,7 @@ export class User {
     return this._isActive && this.rolesCollection.hasAdminPrivileges();
   }
 
-  private isElegibleForRole(role: Role) {
+  private isEligibleForRole(role: Role) {
     if (!this.isActive) {
       return false;
     }

@@ -7,7 +7,7 @@ export class Email {
     if (!this.isValid(email)) {
       throw new InvalidValueObjectException('Invalid email format');
     }
-    this.value = email.toLocaleLowerCase().trim();
+    this.value = email.toLowerCase().trim();
   }
 
   getValue(): string {

@@ -25,12 +25,12 @@ export class PermissionsCollection {
   }
 
   remove(permissionId: PermissionId) {
-    const filterdPermissions = this._permissions.filter((p) => !p.id.equals(permissionId));
+    const filteredPermissions = this._permissions.filter((p) => !p.id.equals(permissionId));
 
-    if (filterdPermissions.length === this._permissions.length) {
+    if (filteredPermissions.length === this._permissions.length) {
       return this;
     }
-    return new PermissionsCollection(filterdPermissions);
+    return new PermissionsCollection(filteredPermissions);
   }
 
   contains(permissionId: PermissionId) {
