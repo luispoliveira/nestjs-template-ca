@@ -9,6 +9,7 @@
   },
   "monorepo": true,
   "root": "apps/api",
+  "defaultLibraryPrefix": "@lib",
   "projects": {
     "api": {
       "type": "application",

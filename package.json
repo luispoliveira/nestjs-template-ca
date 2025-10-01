@@ -14,8 +14,12 @@
     "build:api": "nest build api",
     "start:api": "nest start api --watch",
     "start:api:prod": "node dist/apps/api/main",
-    "test:api": "jest --config ./apps/api/test/jest.config.json",
-    "test:e2e": "jest --config ./apps/api/test/jest-e2e.json",
+    "test:unit": "yarn test:api:unit",
+    "test:int": "yarn test:api:int",
+    "test:e2e": "yarn test:api:e2e",
+    "test:api:unit": "jest --runInBand --config ./apps/api/jest-unit.config.json",
+    "test:api:int": "jest --runInBand --config ./apps/api/jest-int.config.json",
+    "test:api:e2e": "jest --config ./apps/api/test/jest-e2e.json",
     "test:cov": "jest --coverage"
   },
   "dependencies": {
