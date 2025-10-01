@@ -57,7 +57,7 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Run Unit Tests
+      - name: Run Integration Tests
         run: yarn test:int
         env:
           PORT: 3000
