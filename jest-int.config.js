@@ -1,6 +1,6 @@
 // jest-int.config.js
 const { pathsToModuleNameMapper } = require('ts-jest');
-const { compilerOptions } = require('../../../tsconfig.json');
+const { compilerOptions } = require('./tsconfig.json');
 
 module.exports = {
   moduleFileExtensions: ['js', 'json', 'ts'],
@@ -9,7 +9,7 @@ module.exports = {
   }),
   rootDir: '.',
   testEnvironment: 'node',
-  testRegex: '.*\\.(e2e-spec)\\.ts$',
+  testRegex: '.*\\.int-spec\\.ts$',
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
