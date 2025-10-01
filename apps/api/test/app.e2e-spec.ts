@@ -15,6 +15,7 @@ describe('ApiController (e2e)', () => {
   });
 
   it('/ (GET)', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return request(app.getHttpServer()).get('/').expect(200).expect('Hello World!');
   });
 });
