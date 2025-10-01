@@ -14,12 +14,10 @@
     "build:api": "nest build api",
     "start:api": "nest start api --watch",
     "start:api:prod": "node dist/apps/api/main",
-    "test:unit": "yarn test:api:unit",
-    "test:int": "yarn test:api:int",
-    "test:e2e": "yarn test:api:e2e",
-    "test:api:unit": "jest --runInBand --config ./apps/api/jest-unit.config.json",
-    "test:api:int": "jest --runInBand --config ./apps/api/jest-int.config.json",
-    "test:api:e2e": "jest --config ./apps/api/test/jest-e2e.json",
+    "test": "yarn test:unit",
+    "test:unit": "jest --runInBand --config ./jest-unit.config.js",
+    "test:int": "jest --runInBand --config ./jest-int.config.js",
+    "test:e2e": "jest --runInBand --config ./jest-e2e.config.js",
     "test:cov": "jest --coverage"
   },
   "dependencies": {
@@ -27,7 +25,8 @@
     "@nestjs/core": "^11.1.6",
     "@nestjs/platform-express": "^11.1.6",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.2"
+    "rxjs": "^7.8.2",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
@@ -39,6 +38,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.3",
+    "@types/uuid": "^10.0.0",
     "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
@@ -53,25 +53,5 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.45.0"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": ".",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "./coverage",
-    "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/apps/"
-    ]
   }
 }
