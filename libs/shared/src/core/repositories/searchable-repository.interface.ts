@@ -1,3 +1,4 @@
+import { DEFAULT_PER_PAGE } from '../const';
 import { Entity } from '../entities/entity';
 import { RepositoryInterface } from './repository.interface';
 
@@ -30,7 +31,7 @@ export class SearchParams<Filter = string> {
 
   constructor(props: SearchProps<Filter> = {}) {
     this._page = props.page ?? 1;
-    this._perPage = props.perPage ?? 20;
+    this._perPage = props.perPage ?? DEFAULT_PER_PAGE;
     this._sort = props.sort ?? null;
     this._sortDirection = props.sortDirection ?? null;
     this._filter = props.filter ?? null;
@@ -55,7 +56,7 @@ export class SearchParams<Filter = string> {
   }
 
   private set perPage(value: number) {
-    let _perPage = value === (true as unknown) ? 20 : +value;
+    let _perPage = value === (true as unknown) ? DEFAULT_PER_PAGE : +value;
 
     if (isNaN(_perPage) || _perPage <= 0 || parseInt(_perPage.toString(), 10) !== _perPage) {
       _perPage = 20;

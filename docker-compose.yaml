@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:17.5-alpine
+    container_name: nestjs-template-ca-db
+    restart: always
+    tty: true
+    ports:
+      - '5432:5432'
+    env_file:
+      - ./docker/postgres.env
+    volumes:
+      - ${DOCKER_POSTGRES_PATH:-postgres_data}:/var/lib/postgresql/data
+    networks:
+      - nest-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h localhost -p 5432 -U ${POSTGRES_USER:-nestjs}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '3'
+  db-test:
+    image: postgres:17.5-alpine
+    container_name: nestjs-template-ca-db-test
+    restart: always
+    tty: true
+    ports:
+      - '5433:5432'
+    env_file:
+      - ./docker/postgres.env
+    volumes:
+      - ${DOCKER_POSTGRES_TEST_PATH:-dbdata_test}:/var/lib/postgresql/data
+    networks:
+      - nest-network
+
+networks:
+  nest-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  dbdata_test:

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Exclude, Expose } from 'class-transformer';
 import { PaginationPresenter } from './pagination.presenter';
 

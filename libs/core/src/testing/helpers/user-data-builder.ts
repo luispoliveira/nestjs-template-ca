@@ -7,6 +7,7 @@ export function UserDataBuilder(props: Partial<UserProps>): UserProps {
   const future = new Date(now.getTime() + 1000 * 60 * 60 * 24); // 1 day from now
 
   const defaults = {
+    id: faker.number.int({ min: 1, max: 1000 }),
     email: faker.internet.email(),
     isActive: faker.datatype.boolean(),
     activationToken: faker.string.uuid(),

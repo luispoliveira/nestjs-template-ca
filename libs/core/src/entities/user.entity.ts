@@ -19,13 +19,13 @@ export interface UserProps {
   updatedBy: string | null;
   activatedBy: string | null;
   deactivatedBy: string | null;
-  roleId?: string | null;
+  roleId?: number | null;
 }
 
 export class UserEntity extends Entity<UserProps> {
   constructor(
     public readonly props: UserProps,
-    id?: string,
+    id?: number,
   ) {
     UserEntity.validate(props);
     super(props, id);
@@ -141,7 +141,7 @@ export class UserEntity extends Entity<UserProps> {
     this.props.lastLoginAt = new Date();
   }
 
-  assignRole(roleId: string, updatedBy: string) {
+  assignRole(roleId: number, updatedBy: string) {
     UserEntity.validate({ ...this.props, roleId, updatedBy });
     this.props.roleId = roleId;
     this.props.updatedAt = new Date();
@@ -179,11 +179,11 @@ export class UserEntity extends Entity<UserProps> {
     this.props.isActive = value;
   }
 
-  get roleId(): string | null | undefined {
+  get roleId(): number | null | undefined {
     return this.props.roleId;
   }
 
-  private set roleId(value: string | null | undefined) {
+  private set roleId(value: number | null | undefined) {
     this.props.roleId = value;
   }
 

@@ -8,7 +8,7 @@ describe('UserEntity unit tests', () => {
 
   beforeEach(() => {
     props = UserDataBuilder({});
-    sut = new UserEntity(props);
+    sut = new UserEntity(props, 1);
   });
 
   it('should create a user entity', () => {
@@ -22,7 +22,7 @@ describe('UserEntity unit tests', () => {
   });
 
   it('should create a user entity with provided id', () => {
-    const customId = 'custom-id';
+    const customId = 123;
     const user = new UserEntity(props, customId);
     expect(user.id).toBe(customId);
   });
@@ -247,7 +247,7 @@ describe('UserEntity unit tests', () => {
 
   describe('assignRole method', () => {
     it('should assign role successfully', () => {
-      const roleId = '550e8400-e29b-41d4-a716-446655440000';
+      const roleId = 1;
       const updatedBy = 'user-id';
 
       sut.assignRole(roleId, updatedBy);
@@ -258,7 +258,7 @@ describe('UserEntity unit tests', () => {
     });
 
     it('should throw EntityValidationError when assigning invalid role', () => {
-      const invalidRoleId = '';
+      const invalidRoleId = 0;
       const updatedBy = 'user-id';
 
       expect(() => sut.assignRole(invalidRoleId, updatedBy)).toThrow(EntityValidationError);
@@ -267,7 +267,7 @@ describe('UserEntity unit tests', () => {
 
   describe('removeRole method', () => {
     it('should remove role successfully', () => {
-      const propsWithRole = UserDataBuilder({ roleId: '550e8400-e29b-41d4-a716-446655440004' });
+      const propsWithRole = UserDataBuilder({ roleId: 1 });
       const userWithRole = new UserEntity(propsWithRole);
       const updatedBy = 'user-id';
 

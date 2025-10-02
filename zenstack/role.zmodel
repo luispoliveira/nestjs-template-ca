@@ -1,0 +1,13 @@
+import "base"
+import "user"
+
+model Role extends BaseModel {
+  name     String  @unique
+  isActive Boolean @default(true)
+
+  User     User[]
+
+  @@allow('read', auth().roleId == this.id)
+
+  @@map("role")
+}

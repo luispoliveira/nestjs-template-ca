@@ -76,7 +76,7 @@ describe('UserValidator unit tests', () => {
   });
 
   it('should validate invalid roleId', () => {
-    const invalidProps = new UserRules(UserDataBuilder({ roleId: 'invalid-uuid' }));
+    const invalidProps = new UserRules(UserDataBuilder({ roleId: 0 }));
 
     const isValid = validator.validate(invalidProps);
 

@@ -1,0 +1,26 @@
+import "base"
+import "role"
+
+model User extends BaseModel {
+  email                       String    @unique
+  password                    String?   @omit
+  isActive                    Boolean   @default(false)
+  activationToken             String?   @unique
+  activationTokenExpiresAt    DateTime?
+  passwordResetToken          String?   @unique
+  passwordResetTokenExpiresAt DateTime?
+  lastLoginAt                 DateTime?
+
+  role                        Role?     @relation(fields: [roleId], references: [id])
+  roleId                      Int?
+
+  activatedAt                 DateTime?
+  activatedBy                 String?
+  deactivatedAt               DateTime?
+  deactivatedBy               String?
+
+
+  @@allow('all', auth() == this || auth().roleId == 1)
+
+  @@map("user")
+}

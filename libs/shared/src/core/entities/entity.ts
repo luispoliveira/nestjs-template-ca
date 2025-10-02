@@ -1,22 +1,22 @@
-import { v4 as uuidv4 } from 'uuid';
-
 export abstract class Entity<Props = unknown> {
-  public readonly _id: string;
+  public readonly _id: number;
   public readonly props: Props;
 
-  constructor(props: Props, id?: string) {
+  constructor(props: Props, id?: number) {
     this.props = props;
-    this._id = id ?? uuidv4();
+    if (id) {
+      this._id = id;
+    }
   }
 
   get id() {
     return this._id;
   }
 
-  toJSON(): Required<Props & { id: string }> {
+  toJSON(): Required<Props & { id: number }> {
     return {
       id: this.id,
       ...this.props,
-    } as Required<Props & { id: string }>;
+    } as Required<Props & { id: number }>;
   }
 }

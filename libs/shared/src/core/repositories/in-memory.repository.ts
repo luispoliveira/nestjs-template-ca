@@ -8,7 +8,7 @@ export abstract class InMemoryRepository<E extends Entity> implements Repository
     this.items.push(entity);
     return Promise.resolve();
   }
-  async findById(id: string): Promise<E> {
+  async findById(id: number): Promise<E> {
     return await this._get(id);
   }
   async findAll(): Promise<E[]> {
@@ -19,14 +19,14 @@ export abstract class InMemoryRepository<E extends Entity> implements Repository
     this.items[index] = entity;
     return Promise.resolve();
   }
-  async delete(id: string): Promise<void> {
+  async delete(id: number): Promise<void> {
     const index = await this._getIndex(id);
     this.items.splice(index, 1);
     return Promise.resolve();
   }
 
-  private async _getIndex(id: string): Promise<number> {
-    const _id = `${id}`;
+  private async _getIndex(id: number): Promise<number> {
+    const _id = Number(id);
     const index = this.items.findIndex((item) => item.id === _id);
     if (index === -1) {
       return Promise.reject(new NotFoundError(`Entity with id ${id} not found`));
@@ -34,7 +34,7 @@ export abstract class InMemoryRepository<E extends Entity> implements Repository
     return Promise.resolve(index);
   }
 
-  private async _get(id: string) {
+  private async _get(id: number) {
     const item = await this._getIndex(id);
     return Promise.resolve(this.items[item]);
   }

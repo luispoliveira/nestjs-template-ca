@@ -11,7 +11,7 @@ describe('UserEntity Integration Tests', () => {
         isActive: true,
         createdBy: 'admin',
         updatedBy: 'admin',
-        roleId: '550e8400-e29b-41d4-a716-446655440000',
+        roleId: 1,
       });
 
       const user = new UserEntity(validProps);
@@ -50,7 +50,7 @@ describe('UserEntity Integration Tests', () => {
       expect(user.updatedBy).toBe(activatedBy);
 
       // Assign role
-      const roleId = '550e8400-e29b-41d4-a716-446655440001';
+      const roleId = 1;
       user.assignRole(roleId, activatedBy);
 
       expect(user.roleId).toBe(roleId);
@@ -118,7 +118,7 @@ describe('UserEntity Integration Tests', () => {
         activationTokenExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
         passwordResetToken: '550e8400-e29b-41d4-a716-446655440005',
         passwordResetTokenExpiresAt: new Date(Date.now() + 60 * 60 * 1000),
-        roleId: '550e8400-e29b-41d4-a716-446655440006',
+        roleId: 1,
         createdBy: 'system',
         updatedBy: 'admin',
         activatedBy: 'admin',
@@ -132,7 +132,7 @@ describe('UserEntity Integration Tests', () => {
       expect(user.isActive).toBe(true);
       expect(user.activationToken).toBe('550e8400-e29b-41d4-a716-446655440004');
       expect(user.passwordResetToken).toBe('550e8400-e29b-41d4-a716-446655440005');
-      expect(user.roleId).toBe('550e8400-e29b-41d4-a716-446655440006');
+      expect(user.roleId).toBe(1);
       expect(user.createdBy).toBe('system');
       expect(user.updatedBy).toBe('admin');
       expect(user.activatedBy).toBe('admin');
@@ -162,7 +162,7 @@ describe('UserEntity Integration Tests', () => {
       }).toThrow(EntityValidationError);
 
       expect(() => {
-        user.assignRole('invalid-role-id', ''); // Both invalid
+        user.assignRole(0, ''); // Both invalid
       }).toThrow(EntityValidationError);
     });
 
@@ -171,7 +171,7 @@ describe('UserEntity Integration Tests', () => {
         email: 'state@example.com',
         password: 'OriginalPassword123!',
         isActive: true,
-        roleId: '550e8400-e29b-41d4-a716-446655440007',
+        roleId: 1,
       });
 
       const user = new UserEntity(originalProps);
@@ -189,7 +189,7 @@ describe('UserEntity Integration Tests', () => {
       }
 
       try {
-        user.assignRole('invalid-uuid', 'admin');
+        user.assignRole(0, 'admin');
       } catch {
         // State should remain unchanged
         expect(user.roleId).toBe(originalRoleId);
@@ -251,7 +251,7 @@ describe('UserEntity Integration Tests', () => {
       const user = new UserEntity(UserDataBuilder({ roleId: null }));
 
       // Assign valid role
-      const roleId = '550e8400-e29b-41d4-a716-446655440010';
+      const roleId = 1;
       user.assignRole(roleId, 'admin');
       expect(user.roleId).toBe(roleId);
 
@@ -261,7 +261,7 @@ describe('UserEntity Integration Tests', () => {
 
       // Try to assign invalid role
       expect(() => {
-        user.assignRole('invalid-role', 'admin');
+        user.assignRole(0, 'admin');
       }).toThrow(EntityValidationError);
 
       // Ensure role remains null after failed assignment
@@ -335,7 +335,7 @@ describe('UserEntity Integration Tests', () => {
       expect(user.activatedBy).toBe(admin);
       expect(user.createdBy).toBe(initialCreator); // Should not change
 
-      user.assignRole('550e8400-e29b-41d4-a716-446655440013', admin);
+      user.assignRole(1, admin);
       expect(user.updatedBy).toBe(admin);
       expect(user.createdBy).toBe(initialCreator); // Should not change
 

@@ -3,11 +3,13 @@ import {
   IsBoolean,
   IsDate,
   IsEmail,
+  IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsStrongPassword,
   IsUUID,
+  Min,
 } from 'class-validator';
 import { UserProps } from '../entities/user.entity';
 
@@ -85,8 +87,9 @@ export class UserRules {
   deactivatedBy: string | null;
 
   @IsOptional()
-  @IsUUID()
-  roleId?: string | null;
+  @IsInt()
+  @Min(1)
+  roleId?: number | null;
 
   constructor({
     email,

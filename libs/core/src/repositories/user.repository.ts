@@ -4,7 +4,6 @@ import {
   SearchableRepositoryInterface,
 } from '@lib/shared/core/repositories/searchable-repository.interface';
 import { UserEntity } from '../entities/user.entity';
-
 export interface UserRepositoryFilter {
   id?: string;
   email?: string;

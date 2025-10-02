@@ -59,7 +59,7 @@ describe('UserValidator Integration Tests', () => {
 
     it('should validate complex field combinations and interdependencies', () => {
       const validator = UserValidatorFactory.create();
-      
+
       // Test with all optional fields set to valid values
       const complexData = UserDataBuilder({
         email: 'complex@example.com',
@@ -94,10 +94,12 @@ describe('UserValidator Integration Tests', () => {
     });
 
     it('should maintain validation consistency during entity lifecycle operations', () => {
-      const user = new UserEntity(UserDataBuilder({
-        email: 'lifecycle@test.com',
-        isActive: false,
-      }));
+      const user = new UserEntity(
+        UserDataBuilder({
+          email: 'lifecycle@test.com',
+          isActive: false,
+        }),
+      );
 
       // Test activation with validation
       const activatedBy = 'admin';
@@ -166,7 +168,7 @@ describe('UserValidator Integration Tests', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(EntityValidationError);
         const validationError = error as EntityValidationError;
-        
+
         // Ensure the same validation errors are present
         expect(validationError.errors).toHaveProperty('email');
         expect(validationError.errors).toHaveProperty('password');
@@ -321,7 +323,7 @@ describe('UserValidator Integration Tests', () => {
 
     it('should integrate factory-created validators with entity validation', () => {
       const customValidator = UserValidatorFactory.create();
-      
+
       // Test that entities use the same validation logic as factory-created validators
       const testData = UserDataBuilder({
         email: 'entity-validator@test.com',
