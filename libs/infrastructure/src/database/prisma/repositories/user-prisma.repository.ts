@@ -1,16 +1,14 @@
 import { Prisma } from '@generated/prisma';
-import { UserEntity } from '@lib/core/entities/user.entity';
-
-import { UserRepository } from '@lib/core/repositories/user.repository';
+import { UserEntity, UserRepository } from '@lib/core';
 import {
+  ConflicError,
   DEFAULT_PER_PAGE,
   DEFAULT_SKIP,
   DEFAULT_SORT_DIRECTION,
   DEFAULT_SORT_FIELD,
-} from '@lib/shared/core/const';
-import { ConflicError } from '@lib/shared/core/errors/conflict-error';
-import { NotFoundError } from '@lib/shared/core/errors/not-found-error';
-import { PrismaService } from '@lib/shared/infrastructure/database/prisma/prisma.service';
+  NotFoundError,
+  PrismaService,
+} from '@lib/shared';
 import { UserModelMapper } from '../models/user-model.mapper';
 
 export class UserPrismaRepository implements UserRepository.Repository {

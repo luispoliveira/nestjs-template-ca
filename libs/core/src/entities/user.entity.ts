@@ -1,5 +1,4 @@
-import { Entity } from '@lib/shared/core/entities/entity';
-import { EntityValidationError } from '@lib/shared/core/errors/validation-error';
+import { Entity, EntityValidationError } from '@lib/shared';
 import { UserValidatorFactory } from '../validators/user.validator';
 
 export type UserProps = {

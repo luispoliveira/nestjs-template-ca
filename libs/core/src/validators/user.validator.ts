@@ -1,4 +1,4 @@
-import { ClassValidatorFields } from '@lib/shared/core/validators/class-validator-fields';
+import { ClassValidatorFields } from '@lib/shared';
 import {
   IsBoolean,
   IsDate,

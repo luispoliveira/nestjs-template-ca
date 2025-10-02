@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Entity } from '@lib/shared/core/entities/entity';
-import { SearchResult } from '@lib/shared/core/repositories/searchable-repository.interface';
+import { Entity, SearchResult } from '@lib/shared';
 
 export type PaginationOutputDTO<Item = any> = {
   items: Item[];

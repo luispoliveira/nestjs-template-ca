@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { UserProps } from '@lib/core/entities/user.entity';
+import { UserProps } from '@lib/core';
 
 export function UserDataBuilder(props: Partial<UserProps>): UserProps {
   const now = new Date();

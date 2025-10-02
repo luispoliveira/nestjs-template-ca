@@ -17,7 +17,7 @@ export class PaginationPresenter {
   @Transform(({ value }) => Number(value))
   total: number;
 
-  constructor(protected props: PaginationPresenterProps) {
+  constructor(props: PaginationPresenterProps) {
     this.currentPage = props.currentPage;
     this.perPage = props.perPage;
     this.lastPage = props.lastPage;

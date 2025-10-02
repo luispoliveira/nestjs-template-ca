@@ -1,10 +1,10 @@
-import { UserRepository } from '@lib/core/repositories/user.repository';
+import { UserRepository } from '@lib/core';
 import {
+  UseCase as DefaultUseCase,
   PaginationOutputDTO,
   PaginationOutputMapper,
-} from '@lib/shared/application/dtos/pagination-output.dto';
-import { SearchInputDTO } from '@lib/shared/application/dtos/search-input.dto';
-import { UseCase as DefaultUseCase } from '@lib/shared/application/usecases/use-case';
+  SearchInputDTO,
+} from '@lib/shared';
 import { UserOutputDTO, UserOutputMapper } from '../dtos/user-output.dto';
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace ListUsersUseCase {

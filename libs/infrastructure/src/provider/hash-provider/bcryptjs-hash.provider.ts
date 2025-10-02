@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { HashProvider } from '@lib/shared/infrastructure/providers/hash.provider';
+import { HashProvider } from '@lib/shared';
 import { compare, hash } from 'bcryptjs';
 
 export class BcryptjsHashProvider implements HashProvider {

@@ -1,4 +1,4 @@
-import { EnvironmentEnum } from '@lib/shared/core/enums/environment.enum';
+import { EnvironmentEnum } from '@lib/shared';
 import Joi from 'joi';
 
 export const validationSchema = Joi.object({

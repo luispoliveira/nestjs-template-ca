@@ -1,6 +1,6 @@
 import { User } from '@generated/prisma';
-import { UserEntity, UserProps } from '@lib/core/entities/user.entity';
-import { ValidationError } from '@lib/shared/core/errors/validation-error';
+import { UserEntity, UserProps } from '@lib/core';
+import { ValidationError } from '@lib/shared';
 
 export class UserModelMapper {
   static toEntity(model: User): UserEntity {

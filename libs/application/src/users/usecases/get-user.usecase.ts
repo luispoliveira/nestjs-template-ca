@@ -1,5 +1,5 @@
-import { UserRepository } from '@lib/core/repositories/user.repository';
-import { UseCase as DefaultUseCase } from '@lib/shared/application/usecases/use-case';
+import { UserRepository } from '@lib/core';
+import { UseCase as DefaultUseCase } from '@lib/shared';
 import { UserOutputDTO, UserOutputMapper } from '../dtos/user-output.dto';
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace GetUserUseCase {

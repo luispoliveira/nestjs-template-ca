@@ -1,5 +1,5 @@
 import { Prisma } from '@generated/prisma/client';
-import { EnvironmentEnum } from '@lib/shared/core/enums/environment.enum';
+import { EnvironmentEnum } from '@lib/shared';
 import { LogLevel } from '@nestjs/common';
 
 export class LoggerUtils {

@@ -1,4 +1,4 @@
-import { UserEntity } from '@lib/core/entities/user.entity';
+import { UserEntity } from '@lib/core';
 
 export type UserOutputDTO = {
   id: number;

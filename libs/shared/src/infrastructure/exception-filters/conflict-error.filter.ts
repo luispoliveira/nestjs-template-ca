@@ -1,4 +1,4 @@
-import { ConflicError } from '@lib/shared/core/errors/conflict-error';
+import { ConflicError } from '@lib/shared';
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { Response } from 'express';
 @Catch(ConflicError)

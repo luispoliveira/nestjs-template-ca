@@ -2,7 +2,7 @@ import {
   SearchParams as DefaultSearchParams,
   SearchResult as DefaultSearchResult,
   SearchableRepositoryInterface,
-} from '@lib/shared/core/repositories/searchable-repository.interface';
+} from '@lib/shared';
 import { UserEntity } from '../entities/user.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace

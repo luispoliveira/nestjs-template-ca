@@ -1,4 +1,4 @@
-import { SortDirection } from '@lib/shared/core/repositories/searchable-repository.interface';
+import { SortDirection } from '@lib/shared';
 
 export type SearchInputDTO<Filter = string> = {
   page?: number;
