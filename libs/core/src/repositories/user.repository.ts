@@ -8,7 +8,7 @@ import { UserEntity } from '../entities/user.entity';
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace UserRepository {
   export type Filter = {
-    id?: string;
+    id?: number;
     email?: string;
     isActive?: boolean;
   };

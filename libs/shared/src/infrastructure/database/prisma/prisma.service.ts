@@ -1,4 +1,4 @@
-import { PrismaClient } from '@generated/prisma/client';
+import { PrismaClient } from '@generated/prisma';
 import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { EnvConfigService } from '../../env-config/env-config.service';
@@ -12,7 +12,9 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     const environment = _configService.getNodeEnv();
     const logQueries = _configService.getLogPrismaQueries();
 
-    const adapter = new PrismaPg({});
+    const adapter = new PrismaPg({
+      connectionString: _configService.getDatabaseUrl(),
+    });
 
     super({
       adapter,

@@ -18,7 +18,9 @@
     "test:unit": "npx dotenv-cli -e .env.test.local -- jest --runInBand --config ./jest-unit.config.js",
     "test:int": "npx dotenv-cli -e .env.test.local -- jest --runInBand --config ./jest-int.config.js",
     "test:e2e": "npx dotenv-cli -e .env.test.local -- jest --runInBand --config ./jest-e2e.config.js",
-    "test:cov": "npx dotenv-cli -e .env.test.local -- jest --coverage"
+    "test:cov": "npx dotenv-cli -e .env.test.local -- jest --coverage",
+    "prisma:migrate:dev": "npx dotenv-cli -e .env.development.local -- prisma migrate dev",
+    "prisma:migrate:deploy": "npx dotenv-cli -e .env -- prisma migrate deploy"
   },
   "dependencies": {
     "@faker-js/faker": "^10.0.0",
@@ -26,6 +28,7 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.6",
     "@nestjs/platform-express": "^11.1.6",
+    "@nestjs/swagger": "^11.2.0",
     "@prisma/adapter-pg": "^6.16.3",
     "@prisma/client": "6.16.3",
     "@zenstackhq/runtime": "2.19.2",
