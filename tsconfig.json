@@ -28,11 +28,20 @@
       "@lib/core/*": [
         "libs/core/src/*"
       ],
+      "@lib/infrastructure": [
+        "libs/infrastructure/src"
+      ],
+      "@lib/infrastructure/*": [
+        "libs/infrastructure/src/*"
+      ],
       "@lib/shared": [
         "libs/shared/src"
       ],
       "@lib/shared/*": [
         "libs/shared/src/*"
+      ],
+      "@generated/*": [
+        "./generated/*"
       ]
     }
   }

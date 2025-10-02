@@ -1,0 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { map, Observable } from 'rxjs';
+
+@Injectable()
+export class WrapperDataInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
+    return next.handle().pipe(
+      map((body) => {
+        return !body || 'accessToken' in body || 'meta' in body ? body : { data: body };
+      }),
+    );
+  }
+}
