@@ -1,4 +1,5 @@
 import { Entity } from '../entities/entity';
+import { RepositoryInterface } from './repository.interface';
 
 export type SortDirection = 'asc' | 'desc';
 
@@ -138,7 +139,7 @@ export interface SearchableRepositoryInterface<
   Filter = string,
   SearchInput = SearchParams<Filter>,
   SearchOutput = SearchResult<E, Filter>,
-> {
+> extends RepositoryInterface<E> {
   sortableFields: string[];
   search(props: SearchInput): Promise<SearchOutput>;
 }
