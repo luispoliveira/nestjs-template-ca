@@ -13,4 +13,5 @@ module.exports = {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
+  transformIgnorePatterns: ['node_modules/(?!(@faker-js/faker)/)'],
 };

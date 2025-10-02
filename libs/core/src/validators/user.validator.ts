@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { ClassValidatorFields } from '@lib/shared/core/validators/class-validator-fields';
 import {
   IsBoolean,
@@ -34,7 +33,6 @@ export class UserRules {
   isActive: boolean;
 
   @IsOptional()
-  @IsString()
   @IsUUID()
   activationToken: string | null;
 
@@ -43,7 +41,6 @@ export class UserRules {
   activationTokenExpiresAt: Date | null;
 
   @IsOptional()
-  @IsString()
   @IsUUID()
   passwordResetToken: string | null;
 
@@ -72,23 +69,22 @@ export class UserRules {
   deactivatedAt: Date | null;
 
   @IsOptional()
-  @IsString()
+  @IsNotEmpty()
   createdBy: string | null;
 
   @IsOptional()
-  @IsString()
+  @IsNotEmpty()
   updatedBy: string | null;
 
   @IsOptional()
-  @IsString()
+  @IsNotEmpty()
   activatedBy: string | null;
 
   @IsOptional()
-  @IsString()
+  @IsNotEmpty()
   deactivatedBy: string | null;
 
   @IsOptional()
-  @IsString()
   @IsUUID()
   roleId?: string | null;
 

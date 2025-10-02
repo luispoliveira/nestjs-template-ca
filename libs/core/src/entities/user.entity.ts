@@ -30,6 +30,7 @@ export class UserEntity extends Entity<UserProps> {
     UserEntity.validate(props);
     super(props, id);
     this.props.createdAt = props.createdAt ?? new Date();
+    this.props.updatedAt = props.updatedAt ?? new Date();
   }
 
   static validate(props: UserProps) {
