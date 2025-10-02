@@ -4,15 +4,15 @@ import { RepositoryInterface } from './repository.interface';
 
 export type SortDirection = 'asc' | 'desc';
 
-export interface SearchProps<Filter = string> {
+export type SearchProps<Filter = string> = {
   page?: number;
   perPage?: number;
   sort?: string;
   sortDirection?: SortDirection | null;
   filter?: Filter | null;
-}
+};
 
-export interface SearchResultProps<E extends Entity, Filter> {
+export type SearchResultProps<E extends Entity, Filter> = {
   items: E[];
   total: number;
   currentPage: number;
@@ -20,7 +20,7 @@ export interface SearchResultProps<E extends Entity, Filter> {
   sort: string | null;
   sortDirection: SortDirection | null;
   filter: Filter | null;
-}
+};
 
 export class SearchParams<Filter = string> {
   protected _page: number;

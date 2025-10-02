@@ -1,10 +1,7 @@
 import { Prisma } from '@generated/prisma';
 import { UserEntity } from '@lib/core/entities/user.entity';
-import {
-  UserRepositoryInterface,
-  UserRepositorySearchParams,
-  UserRepositorySearchResult,
-} from '@lib/core/repositories/user.repository';
+
+import { UserRepository } from '@lib/core/repositories/user.repository';
 import {
   DEFAULT_PER_PAGE,
   DEFAULT_SKIP,
@@ -16,7 +13,7 @@ import { NotFoundError } from '@lib/shared/core/errors/not-found-error';
 import { PrismaService } from '@lib/shared/infrastructure/database/prisma/prisma.service';
 import { UserModelMapper } from '../models/user-model.mapper';
 
-export class UserPrismaRepository implements UserRepositoryInterface {
+export class UserPrismaRepository implements UserRepository.Repository {
   sortableFields: string[] = ['email', 'createdAt', 'updatedAt'];
 
   constructor(private readonly prismaService: PrismaService) {}
@@ -42,7 +39,7 @@ export class UserPrismaRepository implements UserRepositoryInterface {
     }
   }
 
-  async search(props: UserRepositorySearchParams): Promise<UserRepositorySearchResult> {
+  async search(props: UserRepository.SearchParams): Promise<UserRepository.SearchResult> {
     const sortable = props.sort ? this.sortableFields.includes(props.sort) : false;
 
     const orderByField = sortable && props.sort ? props.sort : DEFAULT_SORT_FIELD;
@@ -69,7 +66,7 @@ export class UserPrismaRepository implements UserRepositoryInterface {
       }),
     ]);
 
-    return new UserRepositorySearchResult({
+    return new UserRepository.SearchResult({
       items: models.map((model) => UserModelMapper.toEntity(model)),
       total,
       perPage: take,

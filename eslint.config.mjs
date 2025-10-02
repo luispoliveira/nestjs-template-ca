@@ -54,7 +54,6 @@ export default tseslint.config(
       '@typescript-eslint/prefer-optional-chain': 'error',
       '@typescript-eslint/prefer-readonly': 'error',
       '@typescript-eslint/array-type': ['error', { default: 'array' }],
-      '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
       '@typescript-eslint/member-ordering': [
         'error',
         {

@@ -4,26 +4,22 @@ import {
   SearchableRepositoryInterface,
 } from '@lib/shared/core/repositories/searchable-repository.interface';
 import { UserEntity } from '../entities/user.entity';
-export interface UserRepositoryFilter {
-  id?: string;
-  email?: string;
-  isActive?: boolean;
-}
 
-export class UserRepositorySearchParams extends DefaultSearchParams<UserRepositoryFilter> {}
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace UserRepository {
+  export type Filter = {
+    id?: string;
+    email?: string;
+    isActive?: boolean;
+  };
 
-export class UserRepositorySearchResult extends DefaultSearchResult<
-  UserEntity,
-  UserRepositoryFilter
-> {}
+  export class SearchParams extends DefaultSearchParams<Filter> {}
 
-export interface UserRepositoryInterface
-  extends SearchableRepositoryInterface<
-    UserEntity,
-    UserRepositoryFilter,
-    UserRepositorySearchParams,
-    UserRepositorySearchResult
-  > {
-  findByEmail(email: string): Promise<UserEntity>;
-  emailExists(email: string): Promise<void>;
+  export class SearchResult extends DefaultSearchResult<UserEntity, Filter> {}
+
+  export interface Repository
+    extends SearchableRepositoryInterface<UserEntity, Filter, SearchParams, SearchResult> {
+    findByEmail(email: string): Promise<UserEntity>;
+    emailExists(email: string): Promise<void>;
+  }
 }

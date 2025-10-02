@@ -2,7 +2,7 @@ import { Entity } from '@lib/shared/core/entities/entity';
 import { EntityValidationError } from '@lib/shared/core/errors/validation-error';
 import { UserValidatorFactory } from '../validators/user.validator';
 
-export interface UserProps {
+export type UserProps = {
   email: string;
   password?: string | null;
   isActive: boolean;
@@ -20,7 +20,7 @@ export interface UserProps {
   activatedBy: string | null;
   deactivatedBy: string | null;
   roleId?: number | null;
-}
+};
 
 export class UserEntity extends Entity<UserProps> {
   constructor(

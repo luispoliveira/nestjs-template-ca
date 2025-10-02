@@ -2,18 +2,18 @@
 import { Entity } from '@lib/shared/core/entities/entity';
 import { SearchResult } from '@lib/shared/core/repositories/searchable-repository.interface';
 
-export interface PaginationOutputDTO<Item = any> {
+export type PaginationOutputDTO<Item = any> = {
   items: Item[];
   total: number;
   currentPage: number;
   lastPage: number;
   perPage: number;
-}
+};
 
 export class PaginationOutputMapper {
-  static toOutput<Item = any>(
+  static toOutput<Item = any, Filter = any>(
     items: Item[],
-    result: SearchResult<Entity>,
+    result: SearchResult<Entity, Filter>,
   ): PaginationOutputDTO<Item> {
     return {
       items,

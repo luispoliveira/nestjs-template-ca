@@ -4,21 +4,26 @@ import { RepositoryInterface } from './repository.interface';
 
 export abstract class InMemoryRepository<E extends Entity> implements RepositoryInterface<E> {
   items: E[] = [];
+
   async insert(entity: E): Promise<void> {
     this.items.push(entity);
     return Promise.resolve();
   }
+
   async findById(id: number): Promise<E> {
     return await this._get(id);
   }
+
   async findAll(): Promise<E[]> {
     return Promise.resolve(this.items);
   }
+
   async update(entity: E): Promise<void> {
     const index = await this._getIndex(entity.id);
     this.items[index] = entity;
     return Promise.resolve();
   }
+
   async delete(id: number): Promise<void> {
     const index = await this._getIndex(id);
     this.items.splice(index, 1);

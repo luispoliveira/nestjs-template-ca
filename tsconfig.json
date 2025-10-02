@@ -22,6 +22,15 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@generated/*": [
+        "./zenstack/generated/*"
+      ],
+      "@lib/application": [
+        "libs/application/src"
+      ],
+      "@lib/application/*": [
+        "libs/application/src/*"
+      ],
       "@lib/core": [
         "libs/core/src"
       ],
@@ -39,9 +48,6 @@
       ],
       "@lib/shared/*": [
         "libs/shared/src/*"
-      ],
-      "@generated/*": [
-        "./zenstack/generated/*"
       ]
     }
   }

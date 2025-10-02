@@ -1,11 +1,11 @@
 import { Transform } from 'class-transformer';
 
-export interface PaginationPresenterProps {
+export type PaginationPresenterProps = {
   currentPage: number;
   perPage: number;
   lastPage: number;
   total: number;
-}
+};
 
 export class PaginationPresenter {
   @Transform(({ value }) => Number(value))
